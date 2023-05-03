@@ -5,7 +5,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:project/screens/home.dart';
 import 'package:project/screens/social_page.dart';
 import 'package:intl/intl.dart';
-
 import '../utilities/publicAppBar.dart';
 
 class CalenderPage extends StatefulWidget {
@@ -29,10 +28,13 @@ class _CalenderPage extends State<CalenderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        child: PublicAppBar(),
+        preferredSize: Size.fromHeight(85),
+      ),
       body: SafeArea(
         child: ListView(
           children: [
-            AppBars(elevation: 0, flexibleSpace: Container()),
             TableCalendar(
               firstDay: DateTime.utc(2010, 10, 20),
               lastDay: DateTime.utc(2040, 10, 20),

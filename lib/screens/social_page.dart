@@ -20,6 +20,10 @@ class _SocialPage extends State<SocialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        child: PublicAppBar(),
+        preferredSize: Size.fromHeight(85),
+      ),
       floatingActionButton: FloatingActionButton(
         // Adding task
         onPressed: () {
@@ -33,7 +37,6 @@ class _SocialPage extends State<SocialPage> {
       body: SafeArea(
         child: ListView(
           children: [
-            AppBars(elevation: 0, flexibleSpace: Container()),
             // Search Bar
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               InkWell(
