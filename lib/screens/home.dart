@@ -1,106 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_application_1/utilities/homeAppBar.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import '../utilities/to-do-list.dart';
+import '../utilities/homeAppBar.dart';
+import '../utilities/todo.dart';
 
-// ======================================== CREATE TO-DO LIST ========================================
-
-class ToDoListTile extends StatelessWidget {
-  final String toDoAct;
-  final String toDoNote;
-  final String toDoTime;
-  final bool isDone;
-  final taskChange;
-  Function(BuildContext)? deleteButton;
-
-  ToDoListTile({
-    super.key,
-    // required this.deleteTask,
-    required this.toDoAct,
-    required this.toDoNote,
-    required this.toDoTime,
-    required this.isDone,
-    required this.taskChange,
-    required this.deleteButton,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 15, bottom: 15, left: 15),
-      child: Slidable(
-        endActionPane: ActionPane(motion: const StretchMotion(), children: [
-          SlidableAction(
-              onPressed: deleteButton,
-              icon: Icons.delete_forever_rounded,
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.red,
-              borderRadius: BorderRadius.circular(15)),
-        ]),
-        child: Container(
-          child: Material(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              child: ListTile(
-                onTap: taskChange,
-                // shape:
-                //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                leading: Icon(
-                  isDone
-                      ? Icons.check_circle_rounded
-                      : Icons.pending_actions_rounded,
-                  color: isDone ? Colors.green : Color(0xFF2585DE),
-                ),
-                title: Text(
-                  toDoAct,
-                  style: TextStyle(
-                      fontFamily: 'Nunito',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: isDone ? Color(0xFF9AC8F4) : Color(0xFF2585DE)),
-                ),
-                subtitle: Text(
-                  toDoNote,
-                  style: TextStyle(
-                      fontFamily: 'Nunito',
-                      fontWeight: FontWeight.w500,
-                      color: isDone ? Color(0xFF9AC8F4) : Color(0xFF2585DE)),
-                ),
-                trailing: Text(
-                  toDoTime,
-                  style: TextStyle(
-                    color: Color(0xFF8C8C8C),
-                    fontFamily: 'Nunito',
-                  ),
-                ),
-              )),
-        ),
-      ),
-    );
-  }
-}
-
-// ======================================== HOME PAGES ========================================
 class HomePage extends StatefulWidget {
   HomePage({
     super.key,
   });
 
   @override
-  State<HomePage> createState() => _HomePagesState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePagesState extends State<HomePage> {
-  List toDoList = [
-    ['Contoh 1', 'Keterangan Disini', '10:00 AM', false],
-    ['Contoh 2', 'Keterangan Disini', '12:00 AM', false],
-  ];
-
+class _HomePageState extends State<HomePage> {
   final titleController = TextEditingController();
   final subtitleController = TextEditingController();
   TimeOfDay timeSelected = TimeOfDay.now();
+
+  late List<ToDo> todos;
+
+  void initState() {
+    this.todos = todoList();
+  }
 
   // Pop - Up to Add Task
   addNewtask() {
@@ -181,7 +103,6 @@ class _HomePagesState extends State<HomePage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 25),
 
                 // Tombol save & cancel
@@ -254,28 +175,123 @@ class _HomePagesState extends State<HomePage> {
 
     // Rebuild the List
     setState(() {
-      toDoList.add([
-        titleController.text,
-        subtitleController.text,
-        timeSelected.format(context).toString(),
-        false,
-      ]);
+      todos.add(ToDo(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          toDoAct: titleController.text,
+          toDoNote: subtitleController.text,
+          toDoTime: timeSelected.format(context).toString(),
+          isDone: false));
       titleController.clear();
       subtitleController.clear();
     });
   }
 
+  // // Show Task Selected
+  // showTask(int index) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             Text(
+  //               toDoList[index][0],
+  //               style: TextStyle(
+  //                   fontFamily: 'Nunito',
+  //                   fontSize: 30,
+  //                   fontWeight: FontWeight.w700,
+  //                   color: Color(0xFF2585DE)),
+  //             ),
+  //             const SizedBox(height: 20),
+  //             Text(
+  //               'Keterangan:',
+  //               style: TextStyle(
+  //                   fontFamily: 'Nunito',
+  //                   fontSize: 20,
+  //                   fontWeight: FontWeight.w500,
+  //                   color: Color(0xFF2585DE)),
+  //             ),
+  //             Text(
+  //               toDoList[index][1],
+  //               style: TextStyle(
+  //                   fontFamily: 'Nunito',
+  //                   fontSize: 20,
+  //                   fontWeight: FontWeight.w400,
+  //                   color: Colors.black),
+  //             ),
+  //             const SizedBox(height: 20),
+  //             Text(
+  //               'Waktu:',
+  //               style: TextStyle(
+  //                   fontFamily: 'Nunito',
+  //                   fontSize: 20,
+  //                   fontWeight: FontWeight.w500,
+  //                   color: Color(0xFF2585DE)),
+  //             ),
+  //             Text(
+  //               toDoList[index][2],
+  //               style: TextStyle(
+  //                   fontFamily: 'Nunito',
+  //                   fontSize: 20,
+  //                   fontWeight: FontWeight.w400,
+  //                   color: Colors.black),
+  //             ),
+  //             const SizedBox(height: 20),
+
+  //             // Tombol save
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 MaterialButton(
+  //                   minWidth: 102,
+  //                   height: 40,
+  //                   onPressed: changeTaskStatus(index),
+  //                   color: Color(0xFF2585DE),
+  //                   child: Text(
+  //                     'Tandai',
+  //                     style: TextStyle(
+  //                         fontFamily: 'Nunito',
+  //                         fontWeight: FontWeight.w500,
+  //                         color: Colors.white,
+  //                         fontSize: 15),
+  //                   ),
+  //                 ),
+  //                 MaterialButton(
+  //                   minWidth: 102,
+  //                   height: 40,
+  //                   onPressed: () => Navigator.of(context).pop(),
+  //                   color: Color(0xFF2585DE),
+  //                   child: Text(
+  //                     'Kembali',
+  //                     style: TextStyle(
+  //                         fontFamily: 'Nunito',
+  //                         fontWeight: FontWeight.w500,
+  //                         color: Colors.white,
+  //                         fontSize: 15),
+  //                   ),
+  //                 ),
+  //               ],
+  //             )
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
   // Change Task Status
-  void changeTaskStatus(int index) {
+  void changeTaskStatus(ToDo todo) {
     setState(() {
-      toDoList[index][3] = !toDoList[index][3];
+      todos.where((element) => element.id == todo.id).first.toggleDone();
     });
   }
 
   // Delete Task
-  void onDeleteTask(int index) {
+  void onDeleteTask(String id) {
     setState(() {
-      toDoList.removeAt(index);
+      todos.removeWhere((item) => item.id == id);
     });
   }
 
@@ -305,18 +321,14 @@ class _HomePagesState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: toDoList.length,
-              itemBuilder: (context, index) {
-                return ToDoListTile(
-                  toDoAct: toDoList[index][0],
-                  toDoNote: toDoList[index][1],
-                  toDoTime: toDoList[index][2],
-                  isDone: toDoList[index][3],
-                  taskChange: () => changeTaskStatus(index),
-                  deleteButton: (context) => onDeleteTask(index),
-                );
-              },
+            child: ListView(
+              children: todos
+                  .map((e) => ToDoListTile(
+                        todo: e,
+                        taskChange: () => changeTaskStatus(e),
+                        deleteButton: (context) => onDeleteTask(e.id),
+                      ))
+                  .toList(),
             ),
           ),
         ],

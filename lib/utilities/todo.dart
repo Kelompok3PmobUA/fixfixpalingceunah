@@ -1,49 +1,37 @@
 import 'package:flutter/material.dart';
 
 class ToDo {
-  // String id;
-  String toDoAct;
-  String toDoTime;
-  String toDoNote;
+  final String id;
+  final String toDoAct;
+  final String toDoNote;
+  final String toDoTime;
   bool isDone;
 
-  ToDo({
-    // required this.id,
-    required this.toDoAct,
-    required this.toDoTime,
-    required this.toDoNote,
-    this.isDone = false,
-  });
+  ToDo(
+      {required this.id,
+      required this.toDoAct,
+      required this.toDoNote,
+      required this.toDoTime,
+      required this.isDone});
 
-  static List<ToDo> todoList() {
-    return [
-      ToDo(
-          // id: '1',
-          toDoAct: "Kelas PDB",
-          toDoNote: 'Ruang 410, Presentasi Project',
-          toDoTime: "10.00",
-          isDone: true),
-      ToDo(
-          // id: '2',
-          toDoAct: "Makan siang",
-          toDoNote: 'Eatery',
-          toDoTime: "12.00",
-          isDone: true),
-      ToDo(
-          // id: '3',
-          toDoAct: "Presentasi PWeb",
-          toDoNote: 'Finishing Laravel',
-          toDoTime: "14.00"),
-      ToDo(
-          // id: '4',
-          toDoAct: "Futsal",
-          toDoNote: 'Puri with SMA bois',
-          toDoTime: "16.00"),
-      ToDo(
-          // id: '6',
-          toDoAct: "Netflix",
-          toDoNote: 'n Chill',
-          toDoTime: "22.00"),
-    ];
+  void toggleDone() {
+    this.isDone = !this.isDone;
   }
+}
+
+List<ToDo> todoList() {
+  return [
+    ToDo(
+        id: '1',
+        toDoAct: 'Contoh 1',
+        toDoNote: 'Ket. disini',
+        toDoTime: "10.00 AM",
+        isDone: false),
+    ToDo(
+        id: '2',
+        toDoAct: 'Contoh 2',
+        toDoNote: 'Ket. disini',
+        toDoTime: "12.00 AM",
+        isDone: false),
+  ];
 }

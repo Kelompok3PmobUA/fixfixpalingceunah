@@ -11,12 +11,13 @@ class HomeAppBar extends StatelessWidget {
         background: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF2585DE),
-                  Color(0xFFA4D3FF),
-                ]),
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF2585DE),
+                Color(0xFFA4D3FF),
+              ],
+            ),
           ),
           child: SafeArea(
             child: Padding(
@@ -30,7 +31,8 @@ class HomeAppBar extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 10),
-                          // Profila Name
+
+                          // Profile Name
                           Text(
                             "Halo Wahyu",
                             style: TextStyle(
@@ -54,14 +56,15 @@ class HomeAppBar extends StatelessWidget {
 
                       // Profile Pict
                       Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.white,
-                          ),
-                          child: Icon(
-                            Icons.person_rounded,
-                          )),
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                        ),
+                        child: Icon(
+                          Icons.person_rounded,
+                        ),
+                      ),
                     ],
                   ),
                   Container(
@@ -75,26 +78,27 @@ class HomeAppBar extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Center(
-                            child: Column(
-                          children: const [
-                            SizedBox(height: 10),
-                            Text(
-                              '"Sepertinya aku tidak melakukan apa-apa, tetapi di kepalaku, aku cukup sibuk."',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  color: Color(0xFF2585DE)),
-                            ),
-                            Text(
-                              '- someone',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  color: Color(0xFF2585DE)),
-                            ),
-                            SizedBox(height: 10)
-                          ],
-                        ))
+                          child: Column(
+                            children: const [
+                              SizedBox(height: 10),
+                              Text(
+                                '"Sepertinya aku tidak melakukan apa-apa, tetapi di kepalaku, aku cukup sibuk."',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    color: Color(0xFF2585DE)),
+                              ),
+                              Text(
+                                '- someone',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    color: Color(0xFF2585DE)),
+                              ),
+                              SizedBox(height: 10)
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -108,18 +112,3 @@ class HomeAppBar extends StatelessWidget {
     );
   }
 }
-
-// Slidable(
-//  endActionPane: ActionPane(motion: StretchMotion(), children: [
-//                 SlidableAction(
-//                   onPressed: deleteTask,
-//                   icon: Icons.delete_forever_rounded,
-//                   foregroundColor: Colors.black,
-//                   autoClose: true,
-//                   borderRadius: BorderRadius.only(
-//                       topRight: Radius.circular(15),
-//                       bottomRight: Radius.circular(15)),
-//                   backgroundColor: Colors.red,
-//                 ),
-//               ]),
-// )
