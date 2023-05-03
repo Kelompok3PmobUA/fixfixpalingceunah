@@ -45,7 +45,7 @@ class _NavBarState extends State<NavBar> {
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.task_rounded,
+                icon: Icons.calendar_today,
                 text: 'Calender',
               ),
               GButton(
@@ -53,7 +53,7 @@ class _NavBarState extends State<NavBar> {
                 text: 'Social',
               ),
               GButton(
-                icon: Icons.people_rounded,
+                icon: Icons.person_rounded,
                 text: 'Profile',
               )
             ],
