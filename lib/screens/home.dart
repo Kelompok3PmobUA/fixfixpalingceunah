@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+import '../provider/all_list.dart';
 import '../utilities/to-do-list.dart';
 import '../utilities/homeAppBar.dart';
 import '../utilities/todo.dart';
@@ -27,133 +30,146 @@ class _HomePageState extends State<HomePage> {
   // Pop - Up to Add Task
   addNewtask() {
     return showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Tambahkan Tugas',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    fontFamily: 'Nunito',
-                    color: Color(0xFF2585DE),
-                  ),
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Tambahkan Tugas',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontFamily: 'Nunito',
+                  color: Color(0xFF2585DE),
                 ),
-                const SizedBox(height: 35),
+              ),
+              const SizedBox(height: 35),
 
-                // Input Activity
-                TextField(
-                  controller: titleController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Kegiatan',
-                      fillColor: Color(0xFF2585DE)),
-                ),
-                const SizedBox(height: 15),
-
-                // Input Keterangan Tambahan
-                TextField(
-                  controller: subtitleController,
-                  decoration: InputDecoration(
+              // Input Activity
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Keterangan',
+                    labelText: 'Kegiatan',
+                    fillColor: Color(0xFF2585DE)),
+              ),
+              const SizedBox(height: 15),
+
+              // Input Keterangan Tambahan
+              TextField(
+                controller: subtitleController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Keterangan',
+                ),
+              ),
+              const SizedBox(height: 15),
+
+              // Input Tanggal
+              MaterialButton(
+                minWidth: double.infinity,
+                height: 50,
+                onPressed: pickDate,
+                color: Color(0xFF2585DE),
+                child: Text(
+                  'Pilih tanggal',
+                  // textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15,
+                    fontFamily: 'Nunito',
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 15),
+              ),
+              const SizedBox(height: 15),
 
-                // Input Tanggal
-                MaterialButton(
-                  minWidth: double.infinity,
-                  height: 50,
-                  onPressed: pickDate,
-                  color: Color(0xFF2585DE),
-                  child: Text(
-                    'Pilih tanggal',
-                    // textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15,
-                      fontFamily: 'Nunito',
-                      color: Colors.white,
-                    ),
+              // Input Jam
+              MaterialButton(
+                minWidth: double.infinity,
+                elevation: 3,
+                height: 50,
+                onPressed: pickTime,
+                color: Color(0xFF2585DE),
+                child: const Text(
+                  'Pilih jam',
+                  // textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15,
+                    fontFamily: 'Nunito',
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 15),
+              ),
+              const SizedBox(height: 25),
 
-                // Input Jam
-                MaterialButton(
-                  minWidth: double.infinity,
-                  elevation: 3,
-                  height: 50,
-                  onPressed: pickTime,
-                  color: Color(0xFF2585DE),
-                  child: Text(
-                    'Pilih jam',
-                    // textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15,
-                      fontFamily: 'Nunito',
-                      color: Colors.white,
+              // Tombol save & cancel
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MaterialButton(
+                    minWidth: 102,
+                    height: 40,
+                    onPressed: () {
+                      Provider.of<AllList>(context, listen: false).addList(
+                        ToDo(
+                          id: const Uuid().v4(),
+                          toDoAct: titleController.text,
+                          toDoNote: subtitleController.text,
+                          toDoTime: timeSelected.format(context).toString(),
+                          isDone: false,
+                        ),
+                      );
+                      Navigator.pop(context);
+                    },
+                    color: Color(0xFF2585DE),
+                    child: const Text(
+                      'Simpan',
+                      style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: 15),
                     ),
                   ),
-                ),
-                const SizedBox(height: 25),
-
-                // Tombol save & cancel
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MaterialButton(
-                      minWidth: 102,
-                      height: 40,
-                      onPressed: saveNewTask,
-                      color: Color(0xFF2585DE),
-                      child: Text(
-                        'Simpan',
-                        style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                            fontSize: 15),
-                      ),
+                  MaterialButton(
+                    minWidth: 102,
+                    height: 40,
+                    onPressed: () => Navigator.of(context).pop(),
+                    color: Color(0xFF2585DE),
+                    child: const Text(
+                      'Kembali',
+                      style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: 15),
                     ),
-                    MaterialButton(
-                      minWidth: 102,
-                      height: 40,
-                      onPressed: () => Navigator.of(context).pop(),
-                      color: Color(0xFF2585DE),
-                      child: Text(
-                        'Kembali',
-                        style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                            fontSize: 15),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          );
-        });
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   // Pick the Date
   void pickDate() {
     showDatePicker(
-        helpText: 'Pilih Tanggal',
-        initialEntryMode: DatePickerEntryMode.calendar,
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2025));
+      helpText: 'Pilih Tanggal',
+      initialEntryMode: DatePickerEntryMode.calendar,
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
   }
 
   // Pick the Time
@@ -161,29 +177,15 @@ class _HomePageState extends State<HomePage> {
     showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
-    ).then((value) {
-      setState(() {
-        timeSelected = value!;
-      });
-    });
-  }
-
-  // Save New Task
-  void saveNewTask() {
-    // Automically pop out the add box when save tapped
-    Navigator.of(context).pop();
-
-    // Rebuild the List
-    setState(() {
-      todos.add(ToDo(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          toDoAct: titleController.text,
-          toDoNote: subtitleController.text,
-          toDoTime: timeSelected.format(context).toString(),
-          isDone: false));
-      titleController.clear();
-      subtitleController.clear();
-    });
+    ).then(
+      (value) {
+        setState(
+          () {
+            timeSelected = value!;
+          },
+        );
+      },
+    );
   }
 
   // // Show Task Selected
@@ -240,47 +242,6 @@ class _HomePageState extends State<HomePage> {
   //             ),
   //             const SizedBox(height: 20),
 
-  //             // Tombol save
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 MaterialButton(
-  //                   minWidth: 102,
-  //                   height: 40,
-  //                   onPressed: changeTaskStatus(index),
-  //                   color: Color(0xFF2585DE),
-  //                   child: Text(
-  //                     'Tandai',
-  //                     style: TextStyle(
-  //                         fontFamily: 'Nunito',
-  //                         fontWeight: FontWeight.w500,
-  //                         color: Colors.white,
-  //                         fontSize: 15),
-  //                   ),
-  //                 ),
-  //                 MaterialButton(
-  //                   minWidth: 102,
-  //                   height: 40,
-  //                   onPressed: () => Navigator.of(context).pop(),
-  //                   color: Color(0xFF2585DE),
-  //                   child: Text(
-  //                     'Kembali',
-  //                     style: TextStyle(
-  //                         fontFamily: 'Nunito',
-  //                         fontWeight: FontWeight.w500,
-  //                         color: Colors.white,
-  //                         fontSize: 15),
-  //                   ),
-  //                 ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   // Change Task Status
   void changeTaskStatus(ToDo todo) {
     setState(() {
@@ -321,14 +282,40 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: todos
-                  .map((e) => ToDoListTile(
-                        todo: e,
-                        taskChange: () => changeTaskStatus(e),
-                        deleteButton: (context) => onDeleteTask(e.id),
-                      ))
-                  .toList(),
+            child: Consumer<AllList>(
+              builder: (context, todolist, child) {
+                return ListView(
+                  children: todolist.allList.isNotEmpty
+                      ? todolist.allList
+                          .map(
+                            (e) => ToDoListTile(
+                              todo: e,
+                              taskChange: () =>
+                                  Provider.of<AllList>(context, listen: false)
+                                      .changeStatus(e),
+                              deleteButton: (context) =>
+                                  Provider.of<AllList>(context, listen: false)
+                                      .deleteTask(e),
+                            ),
+                          )
+                          .toList()
+                      : [
+                          SizedBox(
+                            child: Center(
+                              child: Text(
+                                "Tidak ada daftar",
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Nunito',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                );
+              },
             ),
           ),
         ],

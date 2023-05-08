@@ -28,10 +28,11 @@ List<ToDo> todoList() {
         toDoTime: "10.00 AM",
         isDone: false),
     ToDo(
-        id: '2',
-        toDoAct: 'Contoh 2',
-        toDoNote: 'Ket. disini',
-        toDoTime: "12.00 AM",
-        isDone: false),
+      id: '2',
+      toDoAct: 'Contoh 2',
+      toDoNote: 'Ket. disini',
+      toDoTime: "12.00 AM",
+      isDone: false,
+    ),
   ];
 }
